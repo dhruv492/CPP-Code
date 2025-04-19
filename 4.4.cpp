@@ -1,76 +1,78 @@
 #include <iostream>
 using namespace std;
 
-class BankAccount {
-protected:
-    int accountNumber;
-    double balance;
-    double lastTransaction;
+class BankAccount
+{
+    protected:
+        int accountNumber;
+        double balance;
+        double lastTransaction;
 
-public:
-    BankAccount(int accountNumber, double initialBalance)
-        : accountNumber(accountNumber), balance(initialBalance), lastTransaction(0.0) {}
+    public:
+        BankAccount(int accountNumber, double initialBalance)
+            : accountNumber(accountNumber), balance(initialBalance), lastTransaction(0.0) {}
 
-    virtual ~BankAccount()
-    {
-        cout << "BankAccount with account number " << accountNumber << " is being closed.\n";
-    }
-
-    virtual void deposit(double amount)
-    {
-        balance += amount;
-        lastTransaction = amount;
-        cout << "Deposited: " << amount << ", New Balance: " << balance << endl;
-    }
-
-    virtual void withdraw(double amount)
-    {
-        if (amount <= balance)
+        virtual ~BankAccount()
         {
-            balance -= amount;
-            lastTransaction = -amount;
-            cout << "Withdrawn: " << amount << ", New Balance: " << balance << endl;
+            cout << "BankAccount with account number " << accountNumber << " is being closed.\n";
         }
-        else
-        {
-            cout << "Insufficient balance for withdrawal.\n";
-        }
-    }
 
-    void undoLastTransaction()
-    {
-        balance -= lastTransaction;
-        cout << "Undid last transaction: " << lastTransaction
+        virtual void deposit(double amount)
+        {
+            balance += amount;
+            lastTransaction = amount;
+            cout << "Deposited: " << amount << ", New Balance: " << balance << endl;
+        }
+
+        virtual void withdraw(double amount)
+        {
+            if (amount <= balance)
+            {
+                balance -= amount;
+                lastTransaction = -amount;
+                cout << "Withdrawn: " << amount << ", New Balance: " << balance << endl;
+            }
+            else
+            {
+                cout << "Insufficient balance for withdrawal.\n";
+            }
+        }
+
+        void undoLastTransaction()
+        {
+            balance -= lastTransaction;
+            cout << "Undid last transaction: " << lastTransaction
              << ", New Balance: " << balance << endl;
-        lastTransaction = 0;
-    }
+            lastTransaction = 0;
+        }
 
-    virtual void displayDetails() const
-    {
-        cout << "Account Number: " << accountNumber
+        virtual void displayDetails() const
+        {
+            cout << "Account Number: " << accountNumber
              << ", Balance: " << balance << endl;
-    }
+        }
 };
 
-class SavingsAccount : public BankAccount {
+class SavingsAccount : public BankAccount 
+{
     double interestRate;
 
-public:
-    SavingsAccount(int accountNumber, double initialBalance, double interestRate)
+    public:
+        SavingsAccount(int accountNumber, double initialBalance, double interestRate)
         : BankAccount(accountNumber, initialBalance), interestRate(interestRate) {}
 
-    void applyInterest()
-    {
-        double interest = balance * interestRate / 100;
-        deposit(interest);
-        cout << "Applied Interest: " << interest << ", New Balance: " << balance << endl;
-    }
+        void applyInterest()
+        {
+            double interest = balance * interestRate / 100;
+            deposit(interest);
+            cout << "Applied Interest: " << interest << ", New Balance: " << balance << endl;
+        }
 
-    void displayDetails() const override
-    {
-        BankAccount::displayDetails();
-        cout << "Interest Rate: " << interestRate << "%\n";
-    }
+        void displayDetails() const override
+        {
+            BankAccount::displayDetails();
+            cout << "Interest Rate: " << interestRate << "%\n";
+        }
 };
 
 class CurrentAccount : public BankAccount
