@@ -39,7 +39,6 @@ int main()
 {
     cout << sizeof(s) << endl;
     cout << sizeof(c) << endl;
-    //c.get_r();
     c.cal_area();
     c.display_area();
 }
