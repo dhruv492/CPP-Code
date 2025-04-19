@@ -13,7 +13,9 @@ class ItemData
 public:
 
     int ReturnID()
-    {return ID;}
+    {
+        return ID;
+    }
 
     int NewItem(string N = "Test", float P = 0, int Q = 0)
     {
