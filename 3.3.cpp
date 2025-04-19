@@ -11,12 +11,11 @@ class AccountManager
 public:
     int returnAccNum() { return AccNumber; }
 
-    // Utility function
     static int returnCount() { return Count; }
 
-    AccountManager() : AccNumber(0), Name(""), Balance(0) {} // Default constructor
+    AccountManager() : AccNumber(0), Name(""), Balance(0) {}
 
-    AccountManager(int accn, string n, float b) // Parameterized constructor
+    AccountManager(int accn, string n, float b) 
     {
         AccNumber = accn;
         Name = n;
@@ -24,7 +23,7 @@ public:
         Count++;
     }
 
-    void Transfer(AccountManager &A, float b) // Transfer money between accounts
+    void Transfer(AccountManager &A, float b)
     {
         if (Balance >= b)
         {
@@ -45,11 +44,11 @@ public:
     }
 };
 
-int AccountManager::Count = 0; // Initializing static variable
+int AccountManager::Count = 0;
 
 int main()
 {
-    AccountManager A[100]; // Fixed-size array for storing accounts
+    AccountManager A[100];
     int totalAccounts = 0;
     int choice = 0;
 
@@ -77,7 +76,7 @@ int main()
                 cout << "Enter Account Number: ";
                 cin >> AccNum;
 
-                A[totalAccounts] = AccountManager(AccNum, Name, Bal); // Storing new account in array
+                A[totalAccounts] = AccountManager(AccNum, Name, Bal); 
                 totalAccounts++;
                 cout << "Account added successfully!";
             }
@@ -99,12 +98,12 @@ int main()
             chk = 0;
             for (i = 0; i < totalAccounts; i++)
             {
-                if (A[i].returnAccNum() == MyAccNum) // Finding sender account
+                if (A[i].returnAccNum() == MyAccNum) 
                 {
                     chk++;
                     for (int j = 0; j < totalAccounts; j++)
                     {
-                        if (A[j].returnAccNum() == AccNum) // Finding recipient account
+                        if (A[j].returnAccNum() == AccNum) 
                         {
                             chk++;
                             A[i].Transfer(A[j], Bal);
