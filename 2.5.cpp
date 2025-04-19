@@ -71,12 +71,12 @@ public:
     }
 
     void displayLoanDetails() const {
-        std::cout << "Loan ID: " << loanID << std::endl;
-        std::cout << "Applicant Name: " << applicantName << std::endl;
-        std::cout << "Loan Amount: " << loanAmount << std::endl;
-        std::cout << "Annual Interest Rate: " << annualInterestRate << "%" << std::endl;
-        std::cout << "Loan Tenure (Months): " << loanTenureMonths << std::endl;
-        std::cout << "Monthly EMI: " << calculateEMI() << std::endl;
+        cout << "Loan ID: " << loanID << endl;
+        cout << "Applicant Name: " << applicantName << endl;
+        cout << "Loan Amount: " << loanAmount << endl;
+        cout << "Annual Interest Rate: " << annualInterestRate << "%" << endl;
+        cout << "Loan Tenure (Months): " << loanTenureMonths << endl;
+        cout << "Monthly EMI: " << calculateEMI() << endl;
     }
 };
 
@@ -84,11 +84,11 @@ int main() {
     Loan loan1("L001", "John Doe", 500000, 7.5, 60);
     Loan loan2;
 
-    std::cout << "Loan 1 Details:" << std::endl;
+    cout << "Loan 1 Details:" << endl;
     loan1.displayLoanDetails();
-    std::cout << std::endl;
+    cout << endl;
 
-    std::cout << "Default Loan Details:" << std::endl;
+    cout << "Default Loan Details:" << endl;
     loan2.displayLoanDetails();
 
     return 0;
