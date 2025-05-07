@@ -4,58 +4,68 @@
 
 using namespace std;
 
-void reverseWithIterators(vector<int>& sequence)
+class SequenceReverser
 {
-    auto start = sequence.begin();
-    auto end = sequence.end() - 1;
+private:
+    vector<int> sequence;
 
-    while (start < end)
+    void reverseWithIterators()
     {
-        swap(*start, *end);
-        ++start;
-        --end;
+        auto start = sequence.begin();
+        auto end = sequence.end() - 1;
+
+        while (start < end)
+        {
+            swap(*start, *end);
+            ++start;
+            --end;
+        }
     }
-}
+
+public:
+    void inputSequence()
+    {
+        int n;
+        cout << "Enter the number of integers in the sequence: ";
+        cin >> n;
+
+        sequence.resize(n);
+        cout << "Enter the sequence of " << n << " integers: ";
+        for (int i = 0; i < n; ++i)
+        {
+            cin >> sequence[i];
+        }
+    }
+
+    void displaySequence(const string& label, const vector<int>& seq) const
+    {
+        cout << label << ": ";
+        for (const auto& num : seq)
+        {
+            cout << num << " ";
+        }
+        cout << endl;
+    }
+
+    void processSequences()
+    {
+        displaySequence("Original Sequence", sequence);
+
+        vector<int> seq1 = sequence;
+        reverse(seq1.begin(), seq1.end());
+        displaySequence("Reversed Sequence (std::reverse)", seq1);
+
+        vector<int> seq2 = sequence;
+        reverseWithIterators();
+        displaySequence("Reversed Sequence (manual iterators)", sequence);
+    }
+};
 
 int main()
 {
-    int n;
-    cout << "Enter the number of integers in the sequence: ";
-    cin >> n;
-
-    vector<int> sequence(n);
-
-    cout << "Enter the sequence of " << n << " integers: ";
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> sequence[i];
-    }
-
-    cout << "Original Sequence: ";
-    for (const auto& num : sequence)
-    {
-        cout << num << " ";
-    }
-    cout << endl;
-
-    vector<int> seq1 = sequence;
-    reverse(seq1.begin(), seq1.end());
-    cout << "Reversed Sequence (std::reverse): ";
-    for (const auto& num : seq1)
-    {
-        cout << num << " ";
-    }
-    cout << endl;
-
-    vector<int> seq2 = sequence;
-    reverseWithIterators(seq2);
-    cout << "Reversed Sequence (manual iterators): ";
-    for (const auto& num : seq2)
-    {
-        cout << num << " ";
-    }
-    cout << endl;
-
+    SequenceReverser reverser;
+    reverser.inputSequence();
+    reverser.processSequences();
 
     return 0;
 }
