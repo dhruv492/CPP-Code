@@ -1,94 +1,104 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+
 using namespace std;
 
-struct Item
+class InventoryManager
 {
-    char name[50];
-    int quantity;
-    float price;
-};
-
-void addItem(const char* filename)
-{
-    ofstream file(filename, ios::app | ios::binary);
-    if (!file)
+private:
+    struct Item
     {
-        cout << "Error: Unable to open file for writing." << endl;
-        return;
-    }
+        char name[50];
+        int quantity;
+        float price;
+    };
 
-    Item item;
-    cout << "Enter item name: ";
-    cin.ignore();
-    cin.getline(item.name, 50);
-    cout << "Enter quantity: ";
-    cin >> item.quantity;
-    cout << "Enter price: ";
-    cin >> item.price;
+    const char* filename;
 
-    file.write(reinterpret_cast<char*>(&item), sizeof(Item));
-    file.close();
-}
+public:
+    InventoryManager(const char* file) : filename(file) {}
 
-void viewInventory(const char* filename)
-{
-    ifstream file(filename, ios::binary);
-    if (!file)
+    void addItem()
     {
-        cout << "Error: Unable to open file for reading." << endl;
-        return;
-    }
-
-    Item item;
-    cout << "\nInventory List:\n";
-    while (file.read(reinterpret_cast<char*>(&item), sizeof(Item)))
-    {
-        cout << "Name: " << item.name << ", Quantity: " << item.quantity
-             << ", Price: " << item.price << endl;
-    }
-    file.close();
-}
-
-void searchItem(const char* filename)
-{
-    ifstream file(filename, ios::binary);
-    if (!file)
-    {
-        cout << "Error: Unable to open file for searching." << endl;
-        return;
-    }
-
-    char searchName[50];
-    cout << "Enter item name to search: ";
-    cin.ignore();
-    cin.getline(searchName, 50);
-
-    Item item;
-    bool found = false;
-    while (file.read(reinterpret_cast<char*>(&item), sizeof(Item)))
-    {
-        if (strcmp(item.name, searchName) == 0)
+        ofstream file(filename, ios::app | ios::binary);
+        if (!file)
         {
-            cout << "Item Found - Name: " << item.name << ", Quantity: " << item.quantity
-                 << ", Price: " << item.price << endl;
-            found = true;
-            break;
+            cout << "Error: Unable to open file for writing." << endl;
+            return;
         }
+
+        Item item;
+        cout << "Enter item name: ";
+        cin.ignore();
+        cin.getline(item.name, 50);
+        cout << "Enter quantity: ";
+        cin >> item.quantity;
+        cout << "Enter price: ";
+        cin >> item.price;
+
+        file.write(reinterpret_cast<char*>(&item), sizeof(Item));
+        file.close();
     }
 
-    if (!found)
+    void viewInventory()
     {
-        cout << "Item not found." << endl;
+        ifstream file(filename, ios::binary);
+        if (!file)
+        {
+            cout << "Error: Unable to open file for reading." << endl;
+            return;
+        }
+
+        Item item;
+        cout << "\nInventory List:\n";
+        while (file.read(reinterpret_cast<char*>(&item), sizeof(Item)))
+        {
+            cout << "Name: " << item.name << ", Quantity: " << item.quantity
+                 << ", Price: " << item.price << endl;
+        }
+        file.close();
     }
 
-    file.close();
-}
+    void searchItem()
+    {
+        ifstream file(filename, ios::binary);
+        if (!file)
+        {
+            cout << "Error: Unable to open file for searching." << endl;
+            return;
+        }
+
+        char searchName[50];
+        cout << "Enter item name to search: ";
+        cin.ignore();
+        cin.getline(searchName, 50);
+
+        Item item;
+        bool found = false;
+        while (file.read(reinterpret_cast<char*>(&item), sizeof(Item)))
+        {
+            if (strcmp(item.name, searchName) == 0)
+            {
+                cout << "Item Found - Name: " << item.name << ", Quantity: " << item.quantity
+                     << ", Price: " << item.price << endl;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            cout << "Item not found." << endl;
+        }
+
+        file.close();
+    }
+};
 
 int main()
 {
-    const char* filename = "inventory.dat";
+    InventoryManager manager("inventory.dat");
     int choice;
     do
     {
@@ -98,13 +108,13 @@ int main()
         switch (choice)
         {
             case 1:
-                addItem(filename);
+                manager.addItem();
                 break;
             case 2:
-                viewInventory(filename);
+                manager.viewInventory();
                 break;
             case 3:
-                searchItem(filename);
+                manager.searchItem();
                 break;
             case 4:
                 cout << "You are Exited." << endl;
